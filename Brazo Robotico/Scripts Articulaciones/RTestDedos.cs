@@ -13,8 +13,10 @@ public class RTestDedos : MonoBehaviour
         var hinge = GetComponent<HingeJoint>(); //Obtener componente HingeJoint del Objeto
         var motor = hinge.motor;
         motor.force = 10000; // Fuerza de la bisagra contra la gravedad u otros objetos
+
         Yrot -= Input.GetAxis("Mouse Y");
         Yrot = Mathf.Clamp(Yrot, -80, 80);
+
         transform.localRotation = Quaternion.Euler(Yrot, 0, 0);
         if (Input.GetMouseButtonDown(0) && Physics.Raycast(transform.position, transform.forward, out hit, 5) && hit.transform.GetComponent<Rigidbody>())
         {
@@ -24,10 +26,13 @@ public class RTestDedos : MonoBehaviour
         {
             grabOBJ = null;
         }
-        if (grabOBJ)
+
+        /*if (grabOBJ) 
         {
-            grabOBJ.GetComponent<Rigidbody>().velocity = 10 * (grabPos.position - grabOBJ.transform.position);
-        }
+            grabOBJ.GetComponent<Rigidbody>().velocity = 10 * (grabPos.position - grabOBJ.transform.position); //funcion para tirar el objeto
+        }*/
+
+
 
         if(Input.GetKey(KeyCode.C)){  //Si la tecla A se pulsa, targetVelocity tendra un valor de -90
             motor.targetVelocity = -90;
