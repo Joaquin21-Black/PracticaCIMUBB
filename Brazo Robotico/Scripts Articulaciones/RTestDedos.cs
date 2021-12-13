@@ -4,11 +4,30 @@ using UnityEngine;
 
 public class RTestDedos : MonoBehaviour
 {
+    float Yrot;
+    RaycastHit hit;
+    GameObject grabOBJ;
+    public Transform grabPos;
     void Update()
     {
         var hinge = GetComponent<HingeJoint>(); //Obtener componente HingeJoint del Objeto
         var motor = hinge.motor;
         motor.force = 10000; // Fuerza de la bisagra contra la gravedad u otros objetos
+        Yrot -= Input.GetAxis("Mouse Y");
+        Yrot = Mathf.Clamp(Yrot, -80, 80);
+        transform.localRotation = Quaternion.Euler(Yrot, 0, 0);
+        if (Input.GetMouseButtonDown(0) && Physics.Raycast(transform.position, transform.forward, out hit, 5) && hit.transform.GetComponent<Rigidbody>())
+        {
+            grabOBJ = hit.transform.gameObject;
+        }
+        else if(Input.GetMouseButtonUp(0))
+        {
+            grabOBJ = null;
+        }
+        if (grabOBJ)
+        {
+            grabOBJ.GetComponent<Rigidbody>().velocity = 10 * (grabPos.position - grabOBJ.transform.position);
+        }
 
         if(Input.GetKey(KeyCode.C)){  //Si la tecla A se pulsa, targetVelocity tendra un valor de -90
             motor.targetVelocity = -90;
